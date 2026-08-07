@@ -4,12 +4,12 @@ package Assesment_1;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class sharedResource_Counter {
-    static int counter = 0;
-    static ReentrantLock lock = new ReentrantLock();
+     int counter = 0;
+     ReentrantLock lock = new ReentrantLock();
 
     //using sync block critical section uses monitor lock on calling object but make it thread safe
     public void incrementCounter(){
-        if(lock.tryLock()) {
+                lock.lock();
             try {
                 System.out.println(Thread.currentThread().getName() + " Entered Critical Section");
 
@@ -22,10 +22,6 @@ public class sharedResource_Counter {
                 lock.unlock();
             }
         }
-        else{
-            System.out.println(Thread.currentThread().getName() + " I can't get lock skiping counter");
-        }
-    }
 
     public int getCounter(){
         return counter;

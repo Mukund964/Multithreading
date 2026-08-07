@@ -38,6 +38,6 @@ public class counterThread {
         System.out.println("Final Counter1 = " + incCountObj.getCounter());
 
         // when we have 2 seprate obj diff counters will run sync block correctly
-//        System.out.println("Final Counter2 = " + counterObj.getCounter());
+         System.out.println("Final Counter2 = " + counterObj.getCounter());
     }
 }
