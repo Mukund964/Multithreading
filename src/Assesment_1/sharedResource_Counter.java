@@ -9,17 +9,21 @@ public class sharedResource_Counter {
 
     //using sync block critical section uses monitor lock on calling object but make it thread safe
     public void incrementCounter(){
-        lock.lock();
-        try{
-            System.out.println(Thread.currentThread().getName() + " Entered Critical Section");
+        if(lock.tryLock()) {
+            try {
+                System.out.println(Thread.currentThread().getName() + " Entered Critical Section");
 
-            for(int i=0;i<10000;i++){
-                counter++;
+                for (int i = 0; i < 10000; i++) {
+                    counter++;
+                }
+
+                System.out.println("Critical Section End");
+            } finally {
+                lock.unlock();
             }
-
-            System.out.println("Critical Section End");
-        }finally {
-            lock.unlock();
+        }
+        else{
+            System.out.println(Thread.currentThread().getName() + " I can't get lock skiping counter");
         }
     }
 
