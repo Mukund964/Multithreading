@@ -10,7 +10,7 @@ public class ThreadCreation {
                 try {
                     int conn = pool.acquire();
                     System.out.println(Thread.currentThread().getName() + " got" + conn);
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                     pool.release(conn);
                     System.out.println(Thread.currentThread().getName() + "Released " + conn);
                 } catch (InterruptedException e) {

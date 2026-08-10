@@ -2,6 +2,7 @@ package Assesment_2;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.Semaphore;
 
 public class BoundedPool {
     /*
@@ -15,25 +16,26 @@ public class BoundedPool {
         */
 
     private final Deque<Integer> available = new ArrayDeque<>();
+    private Semaphore sm;
 
     public BoundedPool(int n){
+        sm = new Semaphore(n);
         for(int i=0;i<n;i++){
             available.add(i);
         }
     }
 
-    public synchronized int acquire() throws InterruptedException {
-        while(available.isEmpty()){
-            System.out.println("No Connection pools are available for " + Thread.currentThread().getName() + "Waiting for pools");
-            wait();
+    public int acquire() throws InterruptedException {
+        sm.acquire(); // handle sync for entering this acquire
+        synchronized (available){
+            return available.pollFirst();
         }
-
-        return available.pollFirst();
     }
 
-    public synchronized void release(int poolNo){
-        available.add(poolNo);
-        System.out.println(poolNo + " Available back to the connection pool");
-        notifyAll();
+    public  void release(int poolNo){
+        synchronized (available){
+            available.addLast(poolNo);
+        }
+        sm.release(); // replaced notifyAll
     }
 }
